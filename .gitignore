@@ -1,5 +1,6 @@
 .bak
 build/*
 dist/*
+lib/*
 .vscode/
 libs/*
