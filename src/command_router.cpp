@@ -16,7 +16,9 @@
 #include <ecomm/handler/login_handler.hpp>
 #include <ecomm/handler/register_handler.hpp>
 #include <ecomm/handler/exit_handler.hpp>
-
+#include <ecomm/handler/product_handler.hpp>
+#include <ecomm/handler/passwd_handler.hpp>
+#include <ecomm/handler/logout_handler.hpp>
 namespace ecomm
 {
     command_router::command_router(ioc_container *const iocc)
@@ -28,14 +30,16 @@ namespace ecomm
     {
         using namespace ecomm::handler;
         auto iocc = this->_iocc;
-        auto o_intepreter = iocc->resolve<intepreter>("intepreter");
+        auto i = iocc->resolve<intepreter>("intepreter");
 
         spdlog::debug("command_router::init()");
 
-
-        o_intepreter->handlers()->bind<base_handler>("help", new help_handler(iocc));
-         o_intepreter->handlers()->bind<base_handler>("reg", new register_handler(iocc));        
-        o_intepreter->handlers()->bind<base_handler>("login", new login_handler(iocc));        
-        o_intepreter->handlers()->bind<base_handler>("quit", new exit_handler(iocc));
+        i->handlers()->bind<base_handler>("help", new help_handler(iocc));
+        i->handlers()->bind<base_handler>("reg", new register_handler(iocc));
+        i->handlers()->bind<base_handler>("login", new login_handler(iocc));
+        i->handlers()->bind<base_handler>("logout", new logout_handler(iocc));
+        i->handlers()->bind<base_handler>("quit", new exit_handler(iocc));
+        i->handlers()->bind<base_handler>("prod", new product_handler(iocc));
+        i->handlers()->bind<base_handler>("passwd", new passwd_handler(iocc));
     }
 } // namespace ecomm

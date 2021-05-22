@@ -28,7 +28,7 @@ namespace ecomm
             ioc_container *_iocc;
 
         public:
-            base_service(ecomm::ioc_container * const iocc);
+            base_service(ecomm::ioc_container *const iocc);
         };
     }
 

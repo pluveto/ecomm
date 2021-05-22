@@ -1,0 +1,95 @@
+#include <ecomm/model/user_model_abstract.hpp>
+
+#include <cstring>
+#include <memory>
+#include <ctime>
+
+namespace ecomm
+{
+    namespace model
+    {
+        // getters
+
+        uint64_t user_model_abstract::id()
+        {
+            return this->id;
+        }
+
+        std::string user_model_abstract::role()
+        {
+            return this->role;
+        }
+
+        double user_model_abstract::balance()
+        {
+            return this->balance;
+        }
+
+        std::string user_model_abstract::username()
+        {
+            return std::string(this->username);
+        }
+
+        std::string user_model_abstract::password()
+        {
+            return std::string(this->password);
+        }
+
+        uint64_t user_model_abstract::created_at()
+        {
+            return this->created_at;
+        }
+
+        uint64_t user_model_abstract::updated_at()
+        {
+            return this->updated_at;
+        }
+        // setters
+
+        void user_model_abstract::id(uint64_t id)
+        {
+            this->id = id;
+        }
+
+        void user_model_abstract::balance(double balance)
+        {
+            this->balance = balance;
+        }
+
+        bool user_model_abstract::username(std::string username)
+        {
+            if (username.size() > sizeof(this->username) - 1)
+            {
+                return false;
+            }
+            strcpy(this->username, username.c_str());
+            return true;
+        }
+
+        void user_model_abstract::role(std::string role)
+        {
+            strcpy(this->role, role.c_str());
+        }
+        bool user_model_abstract::password(std::string password)
+        {
+            if (password.size() > sizeof(this->password) - 1)
+            {
+                return false;
+            }
+            auto s = password.c_str();
+            strcpy(this->password, s);
+            return true;
+        }
+
+        void user_model_abstract::created()
+        {
+            this->created_at = std::time(nullptr);
+        }
+
+        void user_model_abstract::updated()
+        {
+            this->updated_at = std::time(nullptr);
+        }
+
+    }
+}

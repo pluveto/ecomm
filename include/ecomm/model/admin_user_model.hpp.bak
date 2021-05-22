@@ -3,27 +3,21 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string>
-
+#include <ecomm/model/user_model_abstract.hpp>
 namespace ecomm
 {
     namespace model
     {
 
-        class user_model
+        class admin_user_model : public user_model_abstract
         {
         private:
-            uint64_t _id;
-            char _role[8];
-            double _balance;
-            char _username[32];
-            char _password[48];
-            uint64_t _created_at;
-            uint64_t _updated_at;
+            bool role(std::string role);
 
         public:
             // getters
             uint64_t id();
-            std::string role();
+            std::string role() override;
             double balance();
             std::string username();
             std::string password();
@@ -32,7 +26,6 @@ namespace ecomm
 
             //setters
             void id(uint64_t id);
-            bool role(std::string role);
             void balance(double balance);
             bool username(std::string username);
             bool password(std::string password);

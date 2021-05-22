@@ -9,18 +9,18 @@ namespace ecomm
         help_handler::help_handler(ecomm::ioc_container *const iocc) : base_handler(iocc)
         {
             this->_callback = [this](std::vector<std::string> args) {
-                if (args.size() == 0)
+                if (args.size() == 1)
                 {
                     this->print_commands();
                     return;
                 }
-                if (args.size() == 1)
+                if (args.size() == 2)
                 {
-                    this->print_command_help(args[0]);
+                    this->print_command_help(args[1]);
                     return;
                 }
                 printf("Invalid input.\n");
-                printf("Type `help` for command list, `type CMD_NAME` for details of specific command.\n");
+                printf("Type `help` for command list, type`help CMD_NAME` for details of specific command.\n");
             };
         }
         std::string help_handler::desc() const

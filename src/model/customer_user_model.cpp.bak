@@ -1,0 +1,29 @@
+#include <ecomm/model/customer_user_model.hpp>
+
+#include <cstring>
+#include <memory>
+#include <ctime>
+
+namespace ecomm
+{
+    namespace model
+    {
+        // getters
+
+        std::string customer_user_model::role() 
+        {
+            return this->role;
+        }
+        bool customer_user_model::role(std::string role)
+        {
+            if (role.size() > sizeof(this->role) - 1)
+            {
+                return false;
+            }
+            auto s = role.c_str();
+            strcpy(this->role, s);
+            return true;
+        }
+
+    }
+}
