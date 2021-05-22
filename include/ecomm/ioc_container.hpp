@@ -20,6 +20,8 @@ namespace ecomm
         template <typename T>
         bool bind(std::string name, T *value);
 
+        bool unbind(std::string name, bool free = true);
+
         template <typename T>
         void foreach (std::function<bool(std::string, T)> callback)
         {
@@ -57,4 +59,5 @@ namespace ecomm
         this->_container[name] = value;
         return true;
     }
+    
 }
