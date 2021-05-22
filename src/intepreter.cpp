@@ -58,8 +58,8 @@ namespace ecomm
         std::getline(std::cin, this->_input_buffer);
         if (std::cin.fail())
         {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return false;
         }
         return true;

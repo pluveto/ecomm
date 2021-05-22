@@ -19,6 +19,7 @@
 #include <ecomm/handler/product_handler.hpp>
 #include <ecomm/handler/passwd_handler.hpp>
 #include <ecomm/handler/logout_handler.hpp>
+#include <ecomm/handler/balance_handler.hpp>
 namespace ecomm
 {
     command_router::command_router(ioc_container *const iocc)
@@ -38,8 +39,10 @@ namespace ecomm
         i->handlers()->bind<base_handler>("reg", new register_handler(iocc));
         i->handlers()->bind<base_handler>("login", new login_handler(iocc));
         i->handlers()->bind<base_handler>("logout", new logout_handler(iocc));
-        i->handlers()->bind<base_handler>("quit", new exit_handler(iocc));
-        i->handlers()->bind<base_handler>("prod", new product_handler(iocc));
+        i->handlers()->bind<base_handler>("quit", new exit_handler(iocc));        
         i->handlers()->bind<base_handler>("passwd", new passwd_handler(iocc));
+
+        i->handlers()->bind<base_handler>("prod", new product_handler(iocc));
+        i->handlers()->bind<base_handler>("bal", new balance_handler(iocc));
     }
 } // namespace ecomm

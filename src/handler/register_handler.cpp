@@ -72,11 +72,11 @@ namespace ecomm
             auto help_text = "-- register --\n"
                              "  {cmd} TYPE USERNAME PASSWORD\n"
                              "      Register a user\n"
-                             "  Available TYPE: \n"
-                             "      1. customer. \n"
-                             "      2. business. \n"
-                             "  Example: \n"
-                             "  {cmd} 1 pluveto dfpdsgXC2gfh\n";
+                             "      Available TYPE: \n"
+                             "          1. customer. \n"
+                             "          2. business. \n"
+                             "      Example: \n"
+                             "    > {cmd} 1 pluveto dfpdsgXC2gfh\n";
 
             return help_text;
         }

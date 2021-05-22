@@ -47,6 +47,7 @@ namespace ecomm
                 return;
             }
             this->_iocc->bind("current_user", u);
+            printf("Welcome back, %s %s.\n", u->role.c_str(), u->username.c_str());
         }
         std::string login_handler::help() const
         {
