@@ -68,7 +68,7 @@ namespace ecomm
         std::vector<std::string> tokens = ecomm::util::str_split(raw, " ");
         if (tokens.size() == 0)
         {
-            // printf("Empty command.\n");
+            printf("Empty command.\n");
             return;
         }
         for (int i = 0; i < tokens.size(); i++)
@@ -76,16 +76,21 @@ namespace ecomm
             util::str_trim(tokens[i]);
         }
 
-        std::string operation = tokens[0];
-        auto handler = _cmd_handlers->resolve<handler::base_handler>(operation);
+        std::string cmd = tokens[0];
+        auto handler = _cmd_handlers->resolve<handler::base_handler>(cmd);
         if (handler == nullptr)
         {
-            printf("Unknown command: %s\n", operation.c_str());
+            printf("Unknown command: %s\n", cmd.c_str());
             // ecomm::util::print_map_key(_handlers);
             return;
         }
-        auto args = std::vector<std::string>(tokens.begin() + 1, tokens.end());
-        handler->call(args);
+        if(!handler->available()){            
+            printf("Disabled command.\n");
+            // ecomm::util::print_map_key(_handlers);
+            return;
+        }
+        //auto args = std::vector<std::string>(tokens.begin() + 1, tokens.end());
+        handler->call(tokens);
         return;
     }
     ioc_container *intepreter::handlers()

@@ -35,7 +35,9 @@ namespace ecomm
             void call(std::vector<std::string> args);
             virtual std::string help() const;
             virtual std::string desc() const;
+            virtual bool available() const;
         };
+        
     }
 
 }

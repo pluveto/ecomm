@@ -22,5 +22,11 @@ namespace ecomm
         {
             return "Not provided yet.";
         }
+
+        
+        bool base_handler::available() const
+        {
+            return true;
+        }
     }
 }
