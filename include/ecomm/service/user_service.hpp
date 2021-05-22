@@ -19,9 +19,10 @@
 #include <unordered_map>
 #include <functional>
 
+#include <ecomm/model/user.hpp>
 #include <ecomm/service/base_service.hpp>
 #include <ecomm/service/crypto_service.hpp>
-#include <ecomm/model/user_model.hpp>
+#include <ecomm/service/storage_service.hpp>
 
 namespace ecomm
 {
@@ -32,12 +33,22 @@ namespace ecomm
         {
         private:
             crypto_service *_crypto_service;
+            storage_service *_storage_service;
 
         public:
             user_service(ecomm::ioc_container *const iocc);
-            model::user_model *login(std::string username, std::string password);
-            model::user_model *sign_up(std::string username, std::string password);
-            bool save(model::user_model *user);
+            model::user *login(std::string username, std::string password);
+            void logout();
+            model::user *get_by(std::u16string key, std::string val);
+            model::user *sign_up(std::string user_type, std::string username, std::string password);
+            model::user *current_user();      
+            std::string hash_password(std::string password);
+            bool save(model::user *user);
+            bool has_login();
+            static model::user *build(std::string user_type);
         };
+        
+        
+
     }
 }
