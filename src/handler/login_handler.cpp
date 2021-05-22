@@ -15,15 +15,20 @@ namespace ecomm
 
         void login_handler::handle(std::vector<std::string> args)
         {
-
-            if (args.size() != 2)
+            if (this->_user_service->has_login())
             {
-                printf("Invalid arguments. Usage:\n");
-                printf("\tregister USERNAME PASSWORD\n");
+                printf("You've logged in.\n");
                 return;
             }
-            std::string username = args[0];
-            std::string password = args[1];
+
+            if (args.size() != 3)
+            {
+                printf("Invalid arguments. Usage:\n");
+                printf("\t%s USERNAME PASSWORD\n", args[0].c_str());
+                return;
+            }
+            std::string username = args[1];
+            std::string password = args[2];
 
             if (!std::regex_match(username, std::regex("^[0-9A-Za-z.@]+$")))
             {
@@ -35,12 +40,19 @@ namespace ecomm
                 printf("Invalid password. Allowed chars: 0-9, a-Z\n");
                 return;
             }
-            this->_user_service->login(username, password);
+            auto u = this->_user_service->login(username, password);
+            if (nullptr == u)
+            {
+                printf("Incorrect username or password.\n");
+                return;
+            }
+            this->_iocc->bind("current_user", u);
         }
         std::string login_handler::help() const
         {
             auto help_text = "{cmd}:\n"
-                             "\t{cmd} USERNAME PASSWORD\t log in user with username=USERNAME and password=PASSWORD\n";
+                             "  {cmd} USERNAME PASSWORD"
+                             "      log in user.\n";
             return help_text;
         }
         std::string login_handler::desc() const

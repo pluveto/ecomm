@@ -1,7 +1,7 @@
 #include <ecomm/handler/register_handler.hpp>
-
+#include <ecomm/util.hpp>
 #include <regex>
-
+#include <vector>
 namespace ecomm
 {
     namespace handler
@@ -15,19 +15,31 @@ namespace ecomm
 
         void register_handler::handle(std::vector<std::string> args)
         {
-
-            if (args.size() != 2)
+            
+            if (this->_user_service->has_login())
             {
-                printf("Invalid arguments. Usage:\n");
-                printf("\tregister USERNAME PASSWORD\n");
+                printf("You've logged in.\n");
                 return;
             }
-            std::string username = args[0];
-            std::string password = args[1];
 
-            if (!std::regex_match(username, std::regex("^[0-9A-Za-z.@]+$")))
+            if (args.size() != 4)
             {
-                printf("Invalid username. Allowed chars: 0-9, a-Z, `@` and `.`\n");
+                printf("Invalid arguments, number of args unexpected.\n");
+                return;
+            }
+            std::string type_num = args[1];
+            std::string username = args[2];
+            std::string password = args[3];
+
+            if (!util::in_array(type_num, {"1", "2"}))
+            {
+                printf("Invalid user type %s. Allowed type: 1 for customer, 2 for business.\n", type_num.c_str());
+                return;
+            }
+
+            if (!std::regex_match(username, std::regex("^[A-Za-z_]+[0-9A-Za-z.@_]*$")))
+            {
+                printf("Invalid username. Allowed chars: 0-9, a-Z, `@`, `.` and start with letters.\n");
                 return;
             }
             if (!std::regex_match(password, std::regex("^[0-z]+$")))
@@ -35,16 +47,37 @@ namespace ecomm
                 printf("Invalid password. Allowed chars: 0-9, a-Z\n");
                 return;
             }
-            if(password.size() < 8){
+            if (password.size() < 8)
+            {
                 printf("Invalid password. Too simple. Expecting >= 8 chars.\n");
                 return;
             }
-            this->_user_service->sign_up(username, password);
+            auto existing_user = this->_user_service->get_by(u"username", username);
+            if (nullptr != existing_user)
+            {
+                printf("Invalid username. Duplicated.\n");
+                spdlog::error("duplicated with user {}.", existing_user->id);
+                return;
+            }
+            delete existing_user;
+            auto user_type = std::vector<std::string>{"admin", "customer", "business"}[std::stoi(type_num)];
+            auto user = this->_user_service->sign_up(user_type, username, password);
+            if (user == nullptr)
+            {
+                printf("Failed to register!\n");
+            }
         }
         std::string register_handler::help() const
         {
-            auto help_text = "{cmd}:\n"
-                             "\t{cmd} USERNAME PASSWORD\t register user with username=USERNAME and password=PASSWORD\n";
+            auto help_text = "-- register --\n"
+                             "  {cmd} TYPE USERNAME PASSWORD\n"
+                             "      Register a user\n"
+                             "  Available TYPE: \n"
+                             "      1. customer. \n"
+                             "      2. business. \n"
+                             "  Example: \n"
+                             "  {cmd} 1 pluveto dfpdsgXC2gfh\n";
+
             return help_text;
         }
         std::string register_handler::desc() const
