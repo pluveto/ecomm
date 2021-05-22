@@ -20,8 +20,9 @@ find_package(unofficial-sqlite3 CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_path(SQLITE_MODERN_CPP_INCLUDE_DIRS "sqlite_modern_cpp.h")
 
-
+target_include_directories(ecomm PRIVATE ${SQLITE_MODERN_CPP_INCLUDE_DIRS})
 target_link_libraries(ecomm PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 target_link_libraries(ecomm PRIVATE unofficial::sqlite3::sqlite3)
 target_link_libraries(ecomm PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
