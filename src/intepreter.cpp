@@ -58,6 +58,8 @@ namespace ecomm
         std::getline(std::cin, this->_input_buffer);
         if (std::cin.fail())
         {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return false;
         }
         return true;
@@ -84,7 +86,8 @@ namespace ecomm
             // ecomm::util::print_map_key(_handlers);
             return;
         }
-        if(!handler->available()){            
+        if (!handler->available())
+        {
             printf("Disabled command.\n");
             // ecomm::util::print_map_key(_handlers);
             return;
