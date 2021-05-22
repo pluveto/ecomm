@@ -103,8 +103,10 @@ namespace ecomm
 
         static bool in_array(std::string needle, std::vector<std::string> haystack)
         {
-            for(auto s :haystack){
-                if(s == needle){
+            for (auto s : haystack)
+            {
+                if (s == needle)
+                {
                     return true;
                 }
             }
@@ -146,7 +148,44 @@ namespace ecomm
         {
             util::str_trim(s);
             return s;
-        }        
+        }
+        template <typename T>
+        static bool expect_number(T &num_out, T min_val, T max_val)
+        {
+            std::cin >> num_out;
+            if (std::cin.fail())
+            {
+                printf("Invalid input, expecting number.\n");
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                return false;
+            }
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            if (num_out < min_val || num_out > max_val)
+            {
+                std::cout << "Invalid number input, not in range " << min_val << " <= x <= " << max_val << "." << std::endl;
+                return false;
+            }
+            return true;
+        }
+        template <typename T>
+        static bool expect_number_max_try(T &num_out, T min_val, T max_val, int max_try, std::string prompt = "")
+        {
+            int current_try = 0;
+            while (!util::expect_number(num_out, min_val, max_val))
+            {
+                std::cout << "Retry. ";
+                std::cout << prompt;
+                current_try++;
+                if (current_try == max_try)
+                {
+                    std::cout << "Exceding max try times.\n";
+                    return false;
+                }
+            }
+            return true;
+        }
     };
 
 }
