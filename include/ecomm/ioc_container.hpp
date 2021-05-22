@@ -20,19 +20,11 @@ namespace ecomm
         template <typename T>
         bool bind(std::string name, T *value);
 
+        template <typename T>
         bool unbind(std::string name, bool free = true);
 
         template <typename T>
-        void foreach (std::function<bool(std::string, T)> callback)
-        {
-            for (auto x : this->_container)
-            {
-                if (!callback(x.first, (T)x.second))
-                {
-                    break;
-                }
-            }
-        }
+        void foreach (std::function<bool(std::string, T)> callback);
     };
 
     template <typename T>
@@ -59,5 +51,33 @@ namespace ecomm
         this->_container[name] = value;
         return true;
     }
-    
+
+    template <typename T>
+    bool ioc_container::unbind(std::string name, bool free)
+    {
+        auto o = (T *)this->resolve<void>(name);
+        spdlog::debug("unbind {}: {}", name, o != nullptr);
+        if (nullptr == o)
+        {
+            return false;
+        }
+        if (free)
+        {
+            delete o;
+        }
+        this->_container.erase(name);
+        return true;
+    }
+
+    template <typename T>
+    void ioc_container::foreach (std::function<bool(std::string, T)> callback)
+    {
+        for (auto x : this->_container)
+        {
+            if (!callback(x.first, (T)x.second))
+            {
+                break;
+            }
+        }
+    }
 }

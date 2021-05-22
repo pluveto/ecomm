@@ -14,19 +14,4 @@
 
 namespace ecomm
 {
-    bool ioc_container::unbind(std::string name, bool free)
-    {
-        auto o = this->resolve<void>(name);
-        spdlog::debug("unbind {}: {}", name, o != nullptr);
-        if (nullptr == o)
-        {
-            return false;
-        }
-        if (free)
-        {
-            delete o;
-        }
-        this->_container.erase(name);
-        return true;
-    }
 }

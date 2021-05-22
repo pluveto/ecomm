@@ -127,7 +127,7 @@ namespace ecomm
 
         void user_service::logout() 
         {
-            this->_iocc->unbind("current_user");
+            this->_iocc->unbind<model::user>("current_user");
         }
         model::user *user_service::current_user()
         {
