@@ -13,7 +13,7 @@
 #include <spdlog/spdlog.h>
 #include <ecomm/intepreter.hpp>
 #include <ecomm/handler/help_handler.hpp>
-
+#include <ecomm/service/storage_service.hpp>
 #include <ecomm/service/crypto_service.hpp>
 #include <ecomm/service/user_service.hpp>
 
@@ -30,6 +30,7 @@ namespace ecomm
         auto iocc = this->_iocc;
 
         spdlog::debug("service_router::init()");
+        iocc->bind<storage_service>("storage_service", new storage_service(iocc));
         iocc->bind<crypto_service>("crypto_service", new crypto_service(iocc));
         iocc->bind<user_service>("user_service", new user_service(iocc));
     }
