@@ -101,6 +101,16 @@ namespace ecomm
                     }));
         }
 
+        static bool in_array(std::string needle, std::vector<std::string> haystack)
+        {
+            for(auto s :haystack){
+                if(s == needle){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // trim from end (in place)
         static inline void str_rtrim(std::string &s)
         {
@@ -136,7 +146,7 @@ namespace ecomm
         {
             util::str_trim(s);
             return s;
-        }
+        }        
     };
 
 }
