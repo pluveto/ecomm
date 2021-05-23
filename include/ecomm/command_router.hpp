@@ -29,7 +29,7 @@ namespace ecomm
          * 
          */
         void init();
-        ~command_router() = default;
+        ~command_router();
     };
 
 } // namespace ecomm

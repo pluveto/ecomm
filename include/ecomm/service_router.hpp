@@ -30,7 +30,7 @@ namespace ecomm
          * 
          */
         void init();
-        ~service_router() = default;
+        ~service_router();
     };
 
 } // namespace ecomm

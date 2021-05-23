@@ -18,6 +18,14 @@ Recommended vscode settings for workspace:
 }
 ```
 
+## Requirements
+
+1. unofficial-sqlite3
+2. spdlog
+3. nlohmann_json
+4. OpenSSL
+5. SQLITE_MODERN_CPP
+
 ## Build
 
 > *Note*: You are expected to have installed requirements which are listed in `CMakeLists.txt`.

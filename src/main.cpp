@@ -15,5 +15,7 @@ int main(int argc, char *argv[])
    app->config("app.json");
    app->init();
    app->run();
+
+   delete app;
 }
 

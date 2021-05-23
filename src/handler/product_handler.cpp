@@ -472,19 +472,25 @@ namespace ecomm
         }
         std::string product_handler::desc() const
         {
-            return "Product commands.";
+            return "Product operations.";
         }
         std::string product_handler::help() const
         {
-            auto help_text = "-- product --\n"
+            auto help_text = "-- Product --\n"
                              "  {cmd} add\n"
-                             "      add product.\n"
-                             "  {cmd} remove\n"
-                             "      remove product.\n"
+                             "      Add product.\n"
+                             "  {cmd} view ID\n"
+                             "      Show detail of product.\n"
+                             "  {cmd} edit ID\n"
+                             "      Edit product by id.\n"
+                             "  {cmd} discount\n"
+                             "      Batch set discount by type.\n"
                              "  {cmd} list\n"
-                             "      list products.\n"
+                             "      List products.\n"
                              "  {cmd} list my\n"
-                             "      list your products.\n";
+                             "      List your products.\n"
+                             "  {cmd} search\n"
+                             "      Search products.\n";
             return help_text;
         }
     }

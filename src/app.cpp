@@ -24,13 +24,22 @@ namespace ecomm
         spdlog::debug("init");
         spdlog::cfg::load_env_levels();
 
+        /*
+        * Released in app::~app()
+        */
         this->_iocc = new ioc_container();
 
         // Init service router
-        (new service_router(this->_iocc))->init();
+        /*
+        * Released in app::~app()
+        */
+        this->_service_router = new service_router(this->_iocc);
+        this->_service_router->init();
 
         // Init intepreter (with command router)
-
+        /*
+        * Released in app::~app()
+        */
         this->_intepreter = new intepreter(this->_iocc);
 
         this->_iocc->bind<intepreter>("intepreter", this->_intepreter);
@@ -66,6 +75,8 @@ namespace ecomm
         catch (const std::exception &e)
         {
             std::cerr << "Failed to start: " << e.what() << '\n';
+            std::cerr << "Please read the documents and start it correctly.";
+            exit(1);
         }
     }
     app_conf *app::config()
@@ -78,4 +89,11 @@ namespace ecomm
         return this->_iocc;
     }
 
+    app::~app()
+    {
+        delete this->_intepreter;
+        delete this->_service_router;
+        delete this->_config;
+        delete this->_iocc;
+    }
 }

@@ -13,6 +13,7 @@
 
 #include <ecomm/ioc_container.hpp>
 #include <ecomm/handler/base_handler.hpp>
+#include <ecomm/command_router.hpp>
 
 namespace ecomm
 {
@@ -22,6 +23,8 @@ namespace ecomm
         ioc_container *_iocc;
         std::string _input_buffer;
         ioc_container *_cmd_handlers;
+        command_router * _cmd_router;
+        bool _exit_flag;
 
         /**
          * @brief Print prompt to console
@@ -45,7 +48,8 @@ namespace ecomm
 
     public:
         intepreter(ioc_container *const iocc);
-
+        
+        ~intepreter();
         /**
          * @brief Initialize intepreter
          * 
@@ -65,7 +69,21 @@ namespace ecomm
          */
         ioc_container *handlers();
 
-        ~intepreter() = default;
+        /**
+         * @brief Get exit flag
+         * 
+         * @return true 
+         * @return false 
+         */
+        bool exit_flag();
+
+        /**
+         * @brief Set exit flag
+         * 
+         * @param val 
+         */
+        void exit_flag(bool val);
+
     };
 
 } // namespace ecomm

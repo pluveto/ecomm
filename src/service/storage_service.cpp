@@ -19,14 +19,20 @@ namespace ecomm
     namespace service
     {
 
-        /*         storage_service::storage_service(ecomm::ioc_container *const iocc, storage_t *storage)
+        
+        storage_service::~storage_service() 
         {
-            this->_storage = storage;
-        } */
+            delete this->_storage;
+        }
+        
 
         storage_service::storage_service(ecomm::ioc_container *const iocc) : base_service(iocc)
         {
             using namespace ecomm::model;
+            /**
+             * Released in storage_service::~storage_service()
+             * 
+             */
             database *db = new database("test.db");
             this->_storage = db;
         }

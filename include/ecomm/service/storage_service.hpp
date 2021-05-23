@@ -27,8 +27,7 @@ namespace ecomm
 
         public:
             storage_service(ecomm::ioc_container *const iocc);
-            /*             storage_service(ecomm::ioc_container *const iocc, storage_t *storage);
- */
+            ~storage_service();
             database *storage();
         };
 

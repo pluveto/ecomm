@@ -32,9 +32,25 @@ namespace ecomm
         auto iocc = this->_iocc;
 
         spdlog::debug("service_router::init()");
+
+        /**
+         * Released in service_router::~service_router()
+         * 
+         */
         iocc->bind<storage_service>("storage_service", new storage_service(iocc));
         iocc->bind<crypto_service>("crypto_service", new crypto_service(iocc));
         iocc->bind<user_service>("user_service", new user_service(iocc));
         iocc->bind<product_service>("product_service", new product_service(iocc));
+    }
+
+    service_router::~service_router()
+    {
+        using namespace ecomm::service;
+        auto iocc = this->_iocc;
+
+        iocc->unbind<storage_service>("storage_service", true);
+        iocc->unbind<crypto_service>("crypto_service", true);
+        iocc->unbind<user_service>("user_service", true);
+        iocc->unbind<product_service>("product_service", true);
     }
 } // namespace ecomm

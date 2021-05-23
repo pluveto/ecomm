@@ -13,6 +13,7 @@
 #include <ecomm/app_conf.hpp>
 #include <ecomm/ioc_container.hpp>
 #include <ecomm/intepreter.hpp>
+#include <ecomm/service_router.hpp>
 
 namespace ecomm
 {
@@ -22,9 +23,11 @@ namespace ecomm
         app_conf *_config;
         ioc_container *_iocc;
         intepreter *_intepreter;
+        service_router * _service_router;
 
     public:
         app() = default;
+        ~app();
         /**
          * @brief Initialize application (Read config, set up ioc container...)
          * 

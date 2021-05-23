@@ -21,6 +21,13 @@ namespace ecomm
     {
         this->_iocc = iocc;
     }
+
+    intepreter::~intepreter()
+    {
+        delete this->_cmd_handlers;
+        delete this->_cmd_router;
+    }
+
     void intepreter::init()
     {
         spdlog::debug("intepreter :: init()");
@@ -28,17 +35,31 @@ namespace ecomm
         {
             spdlog::error("null iocc");
         }
+        /*
+         * Release in intepreter::~intepreter()
+         */
         this->_cmd_handlers = new ioc_container();
         this->_iocc->bind<ioc_container>("command_handlers", this->_cmd_handlers);
 
+        /*
+         * Release in intepreter::~intepreter()
+         */
         auto cmd_router = new command_router(this->_iocc);
         this->_iocc->bind<command_router>("command_router", cmd_router);
-        cmd_router->init();
+
+        this->_cmd_router = cmd_router;
+        this->_cmd_router->init();
+
+        this->exit_flag(false);
     }
     void intepreter::repl()
     {
         for (;;)
-        {
+        {            
+            if (this->exit_flag())
+            {
+                break;
+            }
             this->print_prompt();
             if (!this->read_input())
             {
@@ -100,5 +121,16 @@ namespace ecomm
     {
         return this->_cmd_handlers;
     }
+
+    bool intepreter::exit_flag()
+    {
+        return this->_exit_flag;
+    }
+
+    void intepreter::exit_flag(bool val)
+    {
+        this->_exit_flag = val;
+    }
+    
 
 } // namespace ecomm

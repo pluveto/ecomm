@@ -78,6 +78,7 @@ namespace ecomm
             spdlog::warn("failed to resolve {}, not existing.", name);
             return nullptr;
         }
+
         return (T *)x->second;
     }
     template <typename T>
@@ -96,7 +97,7 @@ namespace ecomm
     template <typename T>
     bool ioc_container::unbind(std::string name, bool free)
     {
-        auto o = (T *)this->resolve<void>(name);
+        auto o = this->resolve<T>(name);
         spdlog::debug("unbind {}: {}", name, o != nullptr);
         if (nullptr == o)
         {
@@ -104,6 +105,7 @@ namespace ecomm
         }
         if (free)
         {
+            spdlog::debug("free {}", name);
             delete o;
         }
         this->_container.erase(name);

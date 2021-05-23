@@ -1,5 +1,7 @@
 #include <ecomm/handler/exit_handler.hpp>
 
+#include <ecomm/intepreter.hpp>
+
 #include <regex>
 
 namespace ecomm
@@ -13,7 +15,9 @@ namespace ecomm
 
         void exit_handler::handle(std::vector<std::string> args)
         {
-            exit(0);
+            auto i = this->_iocc->resolve<intepreter>("intepreter");
+            i->exit_flag(1);
+            exit(1);
         }
 
         std::string exit_handler::desc() const

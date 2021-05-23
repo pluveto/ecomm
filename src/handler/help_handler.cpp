@@ -20,7 +20,7 @@ namespace ecomm
                     return;
                 }
                 printf("Invalid input.\n");
-                printf("Type `help` for command list, type`help CMD_NAME` for details of specific command.\n");
+                printf("Type `%s` for command list, type`%s CMD_NAME` for details of specific command.\n", args[0].c_str(), args[0].c_str());
             };
         }
         std::string help_handler::desc() const
