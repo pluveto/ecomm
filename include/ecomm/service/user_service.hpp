@@ -19,7 +19,9 @@
 #include <unordered_map>
 #include <functional>
 
-#include <ecomm/model/user.hpp>
+#include <ecomm/model/user_abstract.hpp>
+#include <ecomm/model/customer_user.hpp>
+#include <ecomm/model/business_user.hpp>
 #include <ecomm/service/base_service.hpp>
 #include <ecomm/service/crypto_service.hpp>
 #include <ecomm/service/storage_service.hpp>
@@ -37,18 +39,17 @@ namespace ecomm
 
         public:
             user_service(ecomm::ioc_container *const iocc);
-            model::user *login(std::string username, std::string password);
+            model::user_abstract *login(std::string username, std::string password);
             void logout();
-            model::user *get_by(std::u16string key, std::string val);
-            model::user *sign_up(std::string user_type, std::string username, std::string password);
-            model::user *current_user();      
+            model::user_abstract *get_by(std::u16string key, std::string val);
+            model::user_abstract *sign_up(std::string user_type, std::string username, std::string password);
+            model::user_abstract *current_user();
             std::string hash_password(std::string password);
-            bool save(model::user *user);
+            bool save(model::user_abstract *user);
+            bool recharge(model::user_abstract *user, double amount);
+            bool pay(model::user_abstract *user, double amount);
             bool has_login();
-            static model::user *build(std::string user_type);
+            static model::user_abstract *build(std::string user_type);
         };
-        
-        
-
     }
 }

@@ -27,11 +27,17 @@ namespace ecomm
             this->_storage_service = iocc->resolve<storage_service>("storage_service");
         }
 
-        model::user *user_service::login(std::string username, std::string password)
+        model::user_abstract *user_service::login(std::string username, std::string password)
         {
             spdlog::debug("try login with {}:{}", username, password);
             auto hashed_password = this->hash_password(password);
             auto user = this->get_by(u"username", username);
+            if (nullptr == user)
+            {
+                spdlog::debug("No such user: {}", username);
+
+                return nullptr;
+            }
             if (hashed_password != user->password)
             {
                 spdlog::debug("hashed password: {}, expected {}", hashed_password, user->password);
@@ -40,9 +46,19 @@ namespace ecomm
             return user;
         }
 
-        model::user *user_service::build(std::string user_type)
+        model::user_abstract *user_service::build(std::string user_type)
         {
-            auto u = new model::user();
+            model::user_abstract *u;
+            if (user_type == "customer")
+            {
+                u = new model::customer_user;
+            }else
+            if (user_type == "business")
+            {
+                u = new model::business_user;
+            }else{
+                throw "Unexpected user type.";
+            }
             u->role = user_type;
             return u;
         }
@@ -54,7 +70,7 @@ namespace ecomm
             return hashed_password;
         }
 
-        model::user *user_service::sign_up(std::string user_type, std::string username, std::string password)
+        model::user_abstract *user_service::sign_up(std::string user_type, std::string username, std::string password)
         {
             auto hashed_password = this->hash_password(password);
             spdlog::debug("try sign_up with {}:{}", username, password);
@@ -68,7 +84,7 @@ namespace ecomm
             this->save(user);
             return user;
         }
-        bool user_service::save(model::user *u)
+        bool user_service::save(model::user_abstract *u)
         {
             auto db = this->_storage_service->storage();
             if (u->id > 0)
@@ -97,11 +113,35 @@ namespace ecomm
             return true;
         }
 
-        model::user *user_service::get_by(std::u16string key, std::string val)
+        bool user_service::recharge(model::user_abstract *user, double amount)
+        {
+            if (amount < 0)
+            {
+                return false;
+            }
+            user->balance += amount;
+            return this->save(user);
+        }
+
+        bool user_service::pay(model::user_abstract *user, double amount)
+        {
+            if (amount < 0)
+            {
+                return false;
+            }
+            if (user->balance - amount < 0)
+            {
+                return false;
+            }
+            user->balance -= amount;
+            return this->save(user);
+        }
+
+        model::user_abstract *user_service::get_by(std::u16string key, std::string val)
         {
 
             auto db = this->_storage_service->storage();
-            model::user *u = nullptr;
+            model::user_abstract *u = nullptr;
             auto s = u"select id, balance, username, password, role from users "
                      "where ";
             std::u16string sql(s);
@@ -113,7 +153,11 @@ namespace ecomm
                 *db << sql
                     << val >>
                     [&](size_t id, double balance, std::string username, std::string password, std::string role) {
-                        u = new model::user{id, balance, username, password, role};
+                        u = this->build(role);
+                        u->id = id;
+                        u->balance = balance;
+                        u->username = username;
+                        u->password = password;
                     };
             }
             catch (sqlite_exception &e)
@@ -125,18 +169,18 @@ namespace ecomm
             return u;
         }
 
-        void user_service::logout() 
+        void user_service::logout()
         {
-            this->_iocc->unbind<model::user>("current_user");
+            this->_iocc->unbind<model::user_abstract>("current_user");
         }
-        model::user *user_service::current_user()
+        model::user_abstract *user_service::current_user()
         {
-            return this->_iocc->resolve<model::user>("current_user");
+            return this->_iocc->resolve<model::user_abstract>("current_user");
         }
 
         bool user_service::has_login()
         {
-            return nullptr != this->_iocc->resolve<model::user>("current_user");
+            return nullptr != this->_iocc->resolve<model::user_abstract>("current_user");
         }
     }
 }

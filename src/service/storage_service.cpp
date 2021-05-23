@@ -12,7 +12,7 @@
 
 #include <openssl/md5.h>
 #include <stdio.h>
-#include <ecomm/model/user.hpp>
+#include <ecomm/model/user_abstract.hpp>
 
 namespace ecomm
 {

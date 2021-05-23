@@ -16,6 +16,7 @@
 #include <ecomm/service/storage_service.hpp>
 #include <ecomm/service/crypto_service.hpp>
 #include <ecomm/service/user_service.hpp>
+#include <ecomm/service/product_service.hpp>
 
 namespace ecomm
 {
@@ -33,5 +34,6 @@ namespace ecomm
         iocc->bind<storage_service>("storage_service", new storage_service(iocc));
         iocc->bind<crypto_service>("crypto_service", new crypto_service(iocc));
         iocc->bind<user_service>("user_service", new user_service(iocc));
+        iocc->bind<product_service>("product_service", new product_service(iocc));
     }
 } // namespace ecomm

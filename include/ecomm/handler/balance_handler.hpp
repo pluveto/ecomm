@@ -9,6 +9,8 @@
  * 
  */
 
+#pragma once
+
 #include <ecomm/handler/base_handler.hpp>
 
 #include <iostream>
