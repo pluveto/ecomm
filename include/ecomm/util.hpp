@@ -19,6 +19,9 @@
 #include <algorithm>
 #include <cctype>
 #include <locale>
+#include <codecvt>
+#include <regex>
+#include <iomanip>
 
 namespace ecomm
 {
@@ -169,19 +172,136 @@ namespace ecomm
             }
             return true;
         }
-        template <typename T>
-        static bool expect_number_max_try(T &num_out, T min_val, T max_val, int max_try, std::string prompt = "")
+
+        static bool expect_datetime_max_try(time_t &ts_out, time_t min_time, time_t max_time, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
         {
             int current_try = 0;
-            while (!util::expect_number(num_out, min_val, max_val))
+            while (!util::expect_datetime(ts_out, min_time, max_time))
             {
-                std::cout << "Retry. ";
+                std::cout << retry_prompt;
                 std::cout << prompt;
                 current_try++;
                 if (current_try == max_try)
                 {
                     std::cout << "Exceding max try times.\n";
                     return false;
+                }
+            }
+            return true;
+        }
+        static bool expect_datetime(time_t &ts_out, time_t min_time, time_t max_time)
+        {
+            // auto static datetime_pattern = std::regex("^(0[1-9]|1\\d|2[0-8]|29(?=-\\d\\d-(?!1[01345789]00|2[1235679]00)\\d\\d"
+            //                                           "(?:[02468][048]|[13579][26]))|30(?!-02)|31(?=-0[13578]|-1[02]))-(0[1-9]"
+            //                                           "|1[0-2])-([12]\\d{3}) ([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$");
+
+            std::string s;
+            if (!expect_string(s, 10, 19))
+            {
+                return false;
+            }
+            // std::smatch result;
+            // if (std::regex_search(str, result, datetime_pattern))
+            // {
+            //     return true;
+            // }
+            std::tm t{};
+            std::istringstream ss(s);
+
+            ss >> std::get_time(&t, "%Y-%m-%d %H:%M:%S");
+            if (ss.fail())
+            {
+                ss >> std::get_time(&t, "%Y-%m-%d");
+                if (ss.fail())
+                {
+                    printf("Invalid datetime format. Example: 2020-12-31 00:16:59\n");
+                    return false;
+                }
+            }
+
+            ts_out = mktime(&t);
+            if (!(min_time <= ts_out && ts_out <= max_time))
+            {
+                printf("Invalid datetime, exceding limitation.\n");
+                return false;
+            }
+            return true;
+        }
+        static bool expect_string(std::string &string_out, int min_len = 0, int max_len = 1024 * 1024)
+        {
+            std::getline(std::cin, string_out);
+            if (min_len == max_len && string_out.size() != min_len)
+            {
+                string_out.clear();
+                printf("Invalid input, expected length = %d\n", min_len);
+                return false;
+            }
+            if (string_out.empty() && string_out.size() < min_len)
+            {
+                string_out.clear();
+                printf("Invalid input, expected length >= %d\n", min_len);
+                return false;
+            }
+            if (string_out.size() > max_len)
+            {
+                string_out.clear();
+                printf("Invalid input, expected length <= %d\n", max_len);
+                return false;
+            }
+            return true;
+        }
+        static bool expect_string_max_try(std::string &string_out, int min_len = 0, int max_len = 1024 * 1024, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
+        {
+            int current_try = 0;
+            while (!util::expect_string(string_out, min_len, max_len))
+            {
+                std::cout << retry_prompt;
+                std::cout << prompt;
+                current_try++;
+                if (current_try == max_try)
+                {
+                    std::cout << "Exceding max try times.\n";
+                    return false;
+                }
+            }
+            return true;
+        }
+        static std::u16string int_to_u16string(size_t const &i)
+        {
+            std::wstring_convert<std::codecvt_utf8_utf16<char16_t, 0x10ffff, std::little_endian>, char16_t> conv;
+            return conv.from_bytes(std::to_string(i));
+        }
+        static std::u16string string_to_u16string(std::string const &i)
+        {
+            std::wstring_convert<std::codecvt_utf8_utf16<char16_t, 0x10ffff, std::little_endian>, char16_t> conv;
+            return conv.from_bytes(i);
+        }
+        static bool is_integer(const std::string &s)
+        {
+            static std::regex integer("(\\+|-)?[[:digit:]]+");
+            return regex_match(s, integer);
+        }
+        static bool is_decimal(const std::string &s)
+        {
+            static std::regex decimal("^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$");
+            return regex_match(s, decimal);
+        }
+        template <typename T>
+        static bool expect_number_max_try(T &num_out, T min_val, T max_val, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
+        {
+            int current_try = 0;
+            while (!util::expect_number(num_out, min_val, max_val))
+            {
+                current_try++;
+                if (current_try == max_try)
+                {
+                    std::cout << "Exceding max try times.\n";
+                    return false;
+                }
+                else
+                {
+                    std::cout << retry_prompt;
+                    std::cout << prompt;
                 }
             }
             return true;
