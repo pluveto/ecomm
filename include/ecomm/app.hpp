@@ -1,7 +1,7 @@
 /**
  * @file app.hpp
  * @author Pluveto (pluvet@foxmail.com)
- * @brief 
+ * @brief Application class
  * @version 0.1
  * @date 2021-05-20
  * 
@@ -25,11 +25,38 @@ namespace ecomm
 
     public:
         app() = default;
+        /**
+         * @brief Initialize application (Read config, set up ioc container...)
+         * 
+         */
         void init();
+        /**
+         * @brief Run application
+         * 
+         */
         void run();
+        /**
+         * @brief Print application welcome message.
+         * 
+         */
         void welcome();
+        /**
+         * @brief Read configuration and apply to application
+         * 
+         * @param path 
+         */
         void config(std::string path);
+        /**
+         * @brief Get application config
+         * 
+         * @return app_conf* 
+         */
         app_conf *config();
+        /**
+         * @brief Get application ioc container
+         * 
+         * @return ioc_container* 
+         */
         ioc_container *iocc();
     };
 }

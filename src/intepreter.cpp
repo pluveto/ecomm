@@ -35,7 +35,7 @@ namespace ecomm
         this->_iocc->bind<command_router>("command_router", cmd_router);
         cmd_router->init();
     }
-    void intepreter::relp()
+    void intepreter::repl()
     {
         for (;;)
         {

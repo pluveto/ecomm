@@ -27,8 +27,7 @@ namespace ecomm
         this->_iocc = new ioc_container();
 
         // Init service router
-        auto o_service_router = new service_router(this->_iocc);
-        o_service_router->init();
+        (new service_router(this->_iocc))->init();
 
         // Init intepreter (with command router)
 
@@ -37,15 +36,13 @@ namespace ecomm
         this->_iocc->bind<intepreter>("intepreter", this->_intepreter);
 
         this->_intepreter->init();
-        //ecomm::statement::statement_register::applyTo(this);
-        //ecomm::service::service_register::applyTo(this);
     }
 
     void app::run()
     {
         spdlog::debug("run");
         this->welcome();
-        this->_intepreter->relp();
+        this->_intepreter->repl();
     }
 
     void app::welcome()
@@ -53,15 +50,23 @@ namespace ecomm
         spdlog::debug("welcome");
         std::cout << this->_config->motd();
     }
+
     void app::config(std::string path)
     {
         spdlog::debug("config");
-        std::ifstream i(path);
-        nlohmann::json j;
-        i >> j;
-        auto conf = new ecomm::app_conf();
-        ecomm::app_conf::from_json(j, *conf);
-        this->_config = conf;
+        try
+        {
+            std::ifstream i(path);
+            nlohmann::json j;
+            i >> j;
+            auto conf = new ecomm::app_conf();
+            ecomm::app_conf::from_json(j, *conf);
+            this->_config = conf;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << "Failed to start: " << e.what() << '\n';
+        }
     }
     app_conf *app::config()
     {

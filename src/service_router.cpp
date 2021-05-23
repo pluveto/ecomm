@@ -23,6 +23,7 @@ namespace ecomm
     service_router::service_router(ioc_container *const iocc)
     {
         spdlog::debug("service_router::service_router(iocc)");
+        iocc->bind<service_router>("service_router", this);
         this->_iocc = iocc;
     }
     void service_router::init()

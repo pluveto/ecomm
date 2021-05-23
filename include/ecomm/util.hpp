@@ -54,15 +54,15 @@ namespace ecomm
         }
 
         /**
- * @brief Join a array of something to a single std::string
- * 
- * @tparam InputIt 
- * @param begin 
- * @param end 
- * @param separator 
- * @param concluder 
- * @return std::string 
- */
+         * @brief Join a array of something to a single std::string
+         * 
+         * @tparam InputIt 
+         * @param begin 
+         * @param end 
+         * @param separator 
+         * @param concluder 
+         * @return std::string 
+         */
         template <typename InputIt>
         static std::string join(InputIt begin,
                                 InputIt end,
@@ -85,7 +85,13 @@ namespace ecomm
             ss << concluder;
             return ss.str();
         }
-
+        /**
+         * @brief Print all key in a map
+         * 
+         * @tparam K 
+         * @tparam V 
+         * @param m 
+         */
         template <typename K, typename V>
         static void print_map_key(std::unordered_map<K, V> const &m)
         {
@@ -96,14 +102,26 @@ namespace ecomm
             std::cout << std::endl;
         }
 
-        // trim from start (in place)
+        /**
+         * @brief Trim from start (in place)
+         * 
+         * @param s 
+         */
         static inline void str_ltrim(std::string &s)
         {
             s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
                         return !std::isspace(ch);
                     }));
         }
-
+        
+        /**
+         * @brief Check if needle in haystack array
+         * 
+         * @param needle 
+         * @param haystack 
+         * @return true 
+         * @return false 
+         */
         static bool in_array(std::string needle, std::vector<std::string> haystack)
         {
             for (auto s : haystack)
@@ -116,7 +134,11 @@ namespace ecomm
             return false;
         }
 
-        // trim from end (in place)
+        /**
+         * @brief trim from end (in place)
+         * 
+         * @param s 
+         */
         static inline void str_rtrim(std::string &s)
         {
             s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
@@ -125,33 +147,63 @@ namespace ecomm
                     s.end());
         }
 
-        // trim from both ends (in place)
+        /**
+         * @brief trim from both ends (in place)
+         * 
+         * @param s 
+         */
         static inline void str_trim(std::string &s)
         {
             util::str_ltrim(s);
             util::str_rtrim(s);
         }
 
-        // trim from start (copying)
+        /**
+         * @brief trim from start (copying)
+         * 
+         * @param s 
+         * @return std::string 
+         */
         static inline std::string str_ltrim_copy(std::string s)
         {
             util::str_ltrim(s);
             return s;
         }
 
-        // trim from end (copying)
+        /**
+         * @brief trim from end (copying)
+         * 
+         * @param s 
+         * @return std::string 
+         */
         static inline std::string str_rtrim_copy(std::string s)
         {
             util::str_rtrim(s);
             return s;
         }
 
-        // trim from both ends (copying)
+        /**
+         * @brief trim from both ends (copying)
+         * 
+         * @param s 
+         * @return std::string 
+         */
         static inline std::string str_trim_copy(std::string s)
         {
             util::str_trim(s);
             return s;
         }
+        
+        /**
+         * @brief Read user input number
+         * 
+         * @tparam T 
+         * @param num_out 
+         * @param min_val 
+         * @param max_val 
+         * @return true 
+         * @return false 
+         */
         template <typename T>
         static bool expect_number(T &num_out, T min_val, T max_val)
         {
@@ -173,6 +225,18 @@ namespace ecomm
             return true;
         }
 
+        /**
+         * @brief Read user input number, allowing retry
+         * 
+         * @param ts_out 
+         * @param min_time 
+         * @param max_time 
+         * @param max_try 
+         * @param prompt 
+         * @param retry_prompt 
+         * @return true 
+         * @return false 
+         */
         static bool expect_datetime_max_try(time_t &ts_out, time_t min_time, time_t max_time, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
         {
             int current_try = 0;
@@ -189,6 +253,16 @@ namespace ecomm
             }
             return true;
         }
+
+        /**
+         * @brief Read user input datetime
+         * 
+         * @param ts_out 
+         * @param min_time 
+         * @param max_time 
+         * @return true 
+         * @return false 
+         */
         static bool expect_datetime(time_t &ts_out, time_t min_time, time_t max_time)
         {
             // auto static datetime_pattern = std::regex("^(0[1-9]|1\\d|2[0-8]|29(?=-\\d\\d-(?!1[01345789]00|2[1235679]00)\\d\\d"
@@ -227,6 +301,16 @@ namespace ecomm
             }
             return true;
         }
+
+        /**
+         * @brief Read user input string
+         * 
+         * @param string_out 
+         * @param min_len 
+         * @param max_len 
+         * @return true 
+         * @return false 
+         */
         static bool expect_string(std::string &string_out, int min_len = 0, int max_len = 1024 * 1024)
         {
             std::getline(std::cin, string_out);
@@ -250,6 +334,19 @@ namespace ecomm
             }
             return true;
         }
+
+        /**
+         * @brief Read user input string, allowing retry
+         * 
+         * @param string_out 
+         * @param min_len 
+         * @param max_len 
+         * @param max_try 
+         * @param prompt 
+         * @param retry_prompt 
+         * @return true 
+         * @return false 
+         */
         static bool expect_string_max_try(std::string &string_out, int min_len = 0, int max_len = 1024 * 1024, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
         {
             int current_try = 0;
@@ -266,26 +363,70 @@ namespace ecomm
             }
             return true;
         }
+
+        /**
+         * @brief Convert int to u16string
+         * 
+         * @param i 
+         * @return std::u16string 
+         */
         static std::u16string int_to_u16string(size_t const &i)
         {
             std::wstring_convert<std::codecvt_utf8_utf16<char16_t, 0x10ffff, std::little_endian>, char16_t> conv;
             return conv.from_bytes(std::to_string(i));
         }
+
+        /**
+         * @brief Convert string to u16string
+         * 
+         * @param i 
+         * @return std::u16string 
+         */
         static std::u16string string_to_u16string(std::string const &i)
         {
             std::wstring_convert<std::codecvt_utf8_utf16<char16_t, 0x10ffff, std::little_endian>, char16_t> conv;
             return conv.from_bytes(i);
         }
+
+        /**
+         * @brief Regex check if string is valid integer
+         * 
+         * @param s 
+         * @return true 
+         * @return false 
+         */
         static bool is_integer(const std::string &s)
         {
             static std::regex integer("(\\+|-)?[[:digit:]]+");
             return regex_match(s, integer);
         }
+
+        /**
+         * @brief Regex check if string is valid decimal
+         * 
+         * @param s 
+         * @return true 
+         * @return false 
+         */
         static bool is_decimal(const std::string &s)
         {
             static std::regex decimal("^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$");
             return regex_match(s, decimal);
         }
+
+        /**
+         * @brief Read number from user input, allowing retry
+         * 
+         * @tparam T 
+         * @param num_out 
+         * @param min_val 
+         * @param max_val 
+         * @param max_try 
+         * @param prompt 
+         * @param retry_prompt 
+         * @return true 
+         * @return false 
+         */
         template <typename T>
         static bool expect_number_max_try(T &num_out, T min_val, T max_val, int max_try = 3, std::string prompt = "", std::string retry_prompt = "Retry. ")
         {

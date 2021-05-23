@@ -24,15 +24,46 @@ namespace ecomm
     public:
         ioc_container() = default;
 
+        /**
+         * @brief Fetch object from container by name
+         * 
+         * @tparam T 
+         * @param name 
+         * @return T* 
+         */
         template <typename T>
         T *resolve(std::string name);
 
+        /**
+         * @brief Bind object to container by name and object
+         * 
+         * @tparam T 
+         * @param name 
+         * @param value 
+         * @return true 
+         * @return false 
+         */
         template <typename T>
         bool bind(std::string name, T *value);
 
+        /**
+         * @brief Cancel binding between name and object
+         * 
+         * @tparam T 
+         * @param name 
+         * @param free If true, unbind-object will be deleted
+         * @return true 
+         * @return false 
+         */
         template <typename T>
         bool unbind(std::string name, bool free = true);
 
+        /**
+         * @brief Execute callback on every object in this container
+         * 
+         * @tparam T 
+         * @param callback 
+         */
         template <typename T>
         void foreach (std::function<bool(std::string, T)> callback);
     };
