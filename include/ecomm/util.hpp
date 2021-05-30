@@ -22,6 +22,7 @@
 #include <codecvt>
 #include <regex>
 #include <iomanip>
+#include <chrono>
 
 namespace ecomm
 {
@@ -113,7 +114,7 @@ namespace ecomm
                         return !std::isspace(ch);
                     }));
         }
-        
+
         /**
          * @brief Check if needle in haystack array
          * 
@@ -193,7 +194,7 @@ namespace ecomm
             util::str_trim(s);
             return s;
         }
-        
+
         /**
          * @brief Read user input number
          * 
@@ -446,6 +447,13 @@ namespace ecomm
                 }
             }
             return true;
+        }
+
+        static std::string timestamp_to_date_string(size_t time)
+        {
+            std::stringstream ss;
+            ss << std::put_time(std::localtime((time_t *const) & time), "%Y-%m-%d");
+            return ss.str();
         }
     };
 
