@@ -13,7 +13,9 @@ namespace ecomm
             std::string isbn;
             std::string to_ext_props();
             void from_ext_props(std::string ext_props);
-            book_product(){}
+            virtual std::string detail() const;
+
+            book_product() {}
             book_product(
                 size_t uid,
                 double price,

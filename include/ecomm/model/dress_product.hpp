@@ -12,6 +12,8 @@ namespace ecomm
             std::string brand;
             std::string to_ext_props();
             void from_ext_props(std::string ext_props);
+            virtual std::string detail() const;
+
             dress_product() {}
             dress_product(
                 size_t uid,

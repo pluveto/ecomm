@@ -9,7 +9,6 @@
  * 
  */
 
-
 #include <ecomm/model/product_abstract.hpp>
 
 #include <string>
@@ -23,24 +22,24 @@ namespace ecomm
         std::string product_abstract::brief() const
         {
             std::stringstream ss;
-            ss << "#" << id << " - " << title << std::endl;
-            ss << "    Price: $" << real_price_str() << "( " + discount_str() << " off, from " << price_str() << ")" << std::endl;
+            ss << "#" << id << " - \033[32m" << title << "\033[0m" << std::endl;
+            ss << "    Price: \033[31m$" << real_price_str() << "\033[0m( " + discount_str() << " off, from " << price_str() << ")" << std::endl;
             return ss.str();
         }
 
         std::string product_abstract::detail() const
         {
             std::stringstream ss;
-            ss << "title:     " << title << std::endl;
-            ss << "ori price: " << price << std::endl;
-            ss << "special:   " << real_price_str() << std::endl;
-            ss << "id:        " << id << std::endl;
-            ss << "seller id: " << uid << std::endl;
-            ss << "discount:  " << discount_str() << " off" << std::endl;
-            ss << "total:     " << total_amount << std::endl;
-            ss << "available: " << available_amount << std::endl;
-            ss << "type:      " << type << std::endl;
-            ss << "desc:      " << description << std::endl;
+            ss << "\033[36mName:        \033[0m" << title << std::endl;
+            ss << "\033[36mOrigin price:\033[0m" << price << std::endl;
+            ss << "\033[36mSpecial:     \033[0m" << real_price_str() << std::endl;
+            ss << "\033[36mID:          \033[0m" << id << std::endl;
+            ss << "\033[36mSeller ID:   \033[0m" << uid << std::endl;
+            ss << "\033[36mDiscount:    \033[0m" << discount_str() << " off" << std::endl;
+            ss << "\033[36mTotal:       \033[0m" << total_amount << std::endl;
+            ss << "\033[36mAvailable:   \033[0m" << available_amount << std::endl;
+            ss << "\033[36mType:        \033[0m" << type << std::endl;
+            ss << "\033[36mDescription: \033[0m" << description << std::endl;
             return ss.str();
         }
 
@@ -70,7 +69,6 @@ namespace ecomm
             return this->price * (1 - this->discount);
         }
 
-        
         product_abstract::~product_abstract() {}
         product_abstract::product_abstract() {}
 

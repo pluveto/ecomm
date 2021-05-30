@@ -10,9 +10,11 @@ namespace ecomm
         public:
             time_t expired_at;
             time_t manufactured_at;
+            virtual std::string detail() const;
+
             std::string to_ext_props();
             void from_ext_props(std::string ext_props);
-            food_product(){}
+            food_product() {}
             food_product(
                 size_t uid,
                 double price,
