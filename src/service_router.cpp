@@ -17,6 +17,7 @@
 #include <ecomm/service/crypto_service.hpp>
 #include <ecomm/service/user_service.hpp>
 #include <ecomm/service/product_service.hpp>
+#include <ecomm/service/cart_service.hpp>
 
 namespace ecomm
 {
@@ -41,6 +42,7 @@ namespace ecomm
         iocc->bind<crypto_service>("crypto_service", new crypto_service(iocc));
         iocc->bind<user_service>("user_service", new user_service(iocc));
         iocc->bind<product_service>("product_service", new product_service(iocc));
+        iocc->bind<cart_service>("cart_service", new cart_service(iocc));
     }
 
     service_router::~service_router()
@@ -52,5 +54,6 @@ namespace ecomm
         iocc->unbind<crypto_service>("crypto_service", true);
         iocc->unbind<user_service>("user_service", true);
         iocc->unbind<product_service>("product_service", true);
+        iocc->unbind<cart_service>("cart_service", true);
     }
 } // namespace ecomm

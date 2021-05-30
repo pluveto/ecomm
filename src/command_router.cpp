@@ -17,6 +17,7 @@
 #include <ecomm/handler/register_handler.hpp>
 #include <ecomm/handler/exit_handler.hpp>
 #include <ecomm/handler/product_handler.hpp>
+#include <ecomm/handler/cart_handler.hpp>
 #include <ecomm/handler/passwd_handler.hpp>
 #include <ecomm/handler/logout_handler.hpp>
 #include <ecomm/handler/balance_handler.hpp>
@@ -32,7 +33,6 @@ namespace ecomm
         using namespace ecomm::handler;
         auto iocc = this->_iocc;
         auto i = iocc->resolve<intepreter>("intepreter");
-
         spdlog::debug("command_router::init()");
         /*
         * Released in command_router::~command_router()
@@ -45,23 +45,10 @@ namespace ecomm
         i->handlers()->bind<base_handler>("passwd", new passwd_handler(iocc));
         i->handlers()->bind<base_handler>("prod", new product_handler(iocc));
         i->handlers()->bind<base_handler>("bal", new balance_handler(iocc));
+        i->handlers()->bind<base_handler>("cart", new cart_handler(iocc));
     }
 
     command_router::~command_router()
     {
-        auto i = this->_iocc->resolve<intepreter>("intepreter");
-        using ecomm::handler::base_handler;
-        // i->handlers()->foreach<handler>([](std::string name, handler h) -> bool {
-        //     delete h;
-        //     return true;
-        // });
-        i->handlers()->unbind<base_handler>("help");
-        i->handlers()->unbind<base_handler>("reg");
-        i->handlers()->unbind<base_handler>("login");
-        i->handlers()->unbind<base_handler>("logout");
-        i->handlers()->unbind<base_handler>("quit");
-        i->handlers()->unbind<base_handler>("passwd");
-        i->handlers()->unbind<base_handler>("prod");
-        i->handlers()->unbind<base_handler>("bal");
     }
 } // namespace ecomm
