@@ -73,6 +73,17 @@ namespace ecomm
 
             return sqlite3_changes(db->connection().get());
         }
+
+        bool product_service::has(std::u16string key, std::string val, std::u16string extra_where)
+        {
+            auto tmp_item = this->get_by(key, val, extra_where);
+            if (nullptr == tmp_item)
+            {
+                return false;
+            }
+            delete tmp_item;
+            return true;
+        }
         model::product_abstract *product_service::get_by(std::u16string key, std::string val, std::u16string extra_where)
         {
 
@@ -97,19 +108,20 @@ namespace ecomm
                         std::string type,
                         std::string title,
                         std::string description,
-                        std::string _ext_props) {
-                        u = this->build(type);
-                        u->id = id;
-                        u->uid = uid;
-                        u->price = price;
-                        u->discount = discount;
-                        u->total_amount = total_amount;
-                        u->available_amount = available_amount;
-                        u->type = type;
-                        u->title = title;
-                        u->description = description;
-                        u->from_ext_props(_ext_props);
-                    };
+                        std::string _ext_props)
+                {
+                    u = this->build(type);
+                    u->id = id;
+                    u->uid = uid;
+                    u->price = price;
+                    u->discount = discount;
+                    u->total_amount = total_amount;
+                    u->available_amount = available_amount;
+                    u->type = type;
+                    u->title = title;
+                    u->description = description;
+                    u->from_ext_props(_ext_props);
+                };
             }
             catch (sqlite_exception &e)
             {
@@ -149,20 +161,21 @@ namespace ecomm
                         std::string type,
                         std::string title,
                         std::string description,
-                        std::string _ext_props) {
-                        u = this->build(type);
-                        u->id = id;
-                        u->uid = uid;
-                        u->price = price;
-                        u->discount = discount;
-                        u->total_amount = total_amount;
-                        u->available_amount = available_amount;
-                        u->type = type;
-                        u->title = title;
-                        u->description = description;
-                        u->from_ext_props(_ext_props);
-                        list->push_back(u);
-                    };
+                        std::string _ext_props)
+                {
+                    u = this->build(type);
+                    u->id = id;
+                    u->uid = uid;
+                    u->price = price;
+                    u->discount = discount;
+                    u->total_amount = total_amount;
+                    u->available_amount = available_amount;
+                    u->type = type;
+                    u->title = title;
+                    u->description = description;
+                    u->from_ext_props(_ext_props);
+                    list->push_back(u);
+                };
             }
             catch (sqlite_exception &e)
             {
@@ -204,20 +217,21 @@ namespace ecomm
                             std::string type,
                             std::string title,
                             std::string description,
-                            std::string _ext_props) {
-                            u = this->build(type);
-                            u->id = id;
-                            u->uid = uid;
-                            u->price = price;
-                            u->discount = discount;
-                            u->total_amount = total_amount;
-                            u->available_amount = available_amount;
-                            u->type = type;
-                            u->title = title;
-                            u->description = description;
-                            u->from_ext_props(_ext_props);
-                            list->push_back(u);
-                        };
+                            std::string _ext_props)
+                    {
+                        u = this->build(type);
+                        u->id = id;
+                        u->uid = uid;
+                        u->price = price;
+                        u->discount = discount;
+                        u->total_amount = total_amount;
+                        u->available_amount = available_amount;
+                        u->type = type;
+                        u->title = title;
+                        u->description = description;
+                        u->from_ext_props(_ext_props);
+                        list->push_back(u);
+                    };
                 }
                 else
                 {
@@ -231,20 +245,21 @@ namespace ecomm
                             std::string type,
                             std::string title,
                             std::string description,
-                            std::string _ext_props) {
-                            u = this->build(type);
-                            u->id = id;
-                            u->uid = uid;
-                            u->price = price;
-                            u->discount = discount;
-                            u->total_amount = total_amount;
-                            u->available_amount = available_amount;
-                            u->type = type;
-                            u->title = title;
-                            u->description = description;
-                            u->from_ext_props(_ext_props);
-                            list->push_back(u);
-                        };
+                            std::string _ext_props)
+                    {
+                        u = this->build(type);
+                        u->id = id;
+                        u->uid = uid;
+                        u->price = price;
+                        u->discount = discount;
+                        u->total_amount = total_amount;
+                        u->available_amount = available_amount;
+                        u->type = type;
+                        u->title = title;
+                        u->description = description;
+                        u->from_ext_props(_ext_props);
+                        list->push_back(u);
+                    };
                 }
             }
             catch (sqlite_exception &e)

@@ -32,7 +32,10 @@ namespace ecomm
             std::vector<model::product_abstract *> *search_by(std::u16string key = u"", std::string val = "", std::u16string extra_where = u"");
             model::product_abstract *build(std::string type);
             bool save(model::product_abstract *u);
+            bool has(std::u16string key, std::string val, std::u16string extra_where = u"");
         };
+        
+        
         
 
     }
